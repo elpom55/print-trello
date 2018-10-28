@@ -1,4 +1,4 @@
-Utility to give you a printable copy of your Trello Board, lists - cards - labels - desc - attatchments - comments - votes. 
+Utility to give you a printable copy of your Trello Board, lists - cards - labels - desc - attachments - comments - votes. 
 
 This is helpful even when you just want to be able to scan quickly, without having to turn each card over.
 
