@@ -16,146 +16,157 @@ var prefVal;  		// current preferences
 
 var prefSpec = [
 
-  { type: 'fieldset', name: 'Board' },
+  { type: 'fieldset', name: 'Board 看板' },
 
   { key: 'showBoardTitle', 
-		name: 'Show Board Title',
+		name: 'Show Board Title 顯示看板標題',
 		dflt: true },
 
-  { type: 'fieldset', name: 'Lists'},
+  { type: 'fieldset', name: 'Lists 列表'},
 
   { key: 'numberLists', 
-		name: 'Sequentially number lists',
-		dflt: false },
+		name: 'Sequentially number lists 列表加上流水號',
+		dflt: true },
 
   { key: 'showListTitle', 
-		name: 'Show List Title',
+		name: 'Show List Title 顯示列表標題',
 		dflt: true },
 
 
   { key: 'startListOnNewPage', 
-		name: 'Start each list on new page',
+		name: 'Start each list on new page 每個列表呈現在一新頁上',
 		dflt: true },
 
   { key: 'prefaceListNameWithBoard', 
-		name: 'Repeat board name when showing list name',
+		name: 'Repeat board name when showing list name 列表標題前重複顯示看板標題',
 		dflt: false },
 
   { key: 'showSingleList', 
-		name: 'Show option to print list by itself',
-		dflt: true },
+		name: 'Show option to print list by itself 每個列表標題後都顯示列印選項',
+		dflt: false },
 
   { key: 'showClosedLists', 
-		name: 'Show closed lists',
+		name: 'Show closed lists 顯示已封存的列表',
 		dflt: false },
 
 
-  { name: 'Cards', type: 'fieldset'},
+  { name: 'Cards 卡片', type: 'fieldset'},
 
   { key: 'numberCardsInList', 
-		name: 'Sequentially number cards within each list',
-		dflt: false },
+		name: 'Sequentially number cards within each list 卡片加上流水號',
+		dflt: true },
 
   { key: 'showCardTitle', 
-		name: 'Show Card Title',
+		name: 'Show Card Title 顯示卡片標題',
 		dflt: true },
 
   { key: 'showCardNumber', 
-		name: 'Show Card Id #',
+		name: 'Show Card Id # 顯示卡片編號',
 		dflt: true },
 
   { key: 'showCardLabels', 
-		name: 'Show Card Label',
+		name: 'Show Card Label 顯示卡片標籤',
 		type: 'pulldown',
 		options: [
-			'do-not-show',
-			'plain-text',
-			'show-color-block',
-			'colored-text',
-			'text-in-colored-block'
+			'do-not-show 不顯示',
+			'plain-text 純文字',
+			'show-color-block 顯示色塊',
+			'colored-text 文字色彩',
+			'text-in-colored-block 文字在色塊中'
 			],
 		dflt: 'colored-text' },
 
 
   { key: 'showCardMembers', 
-		name: 'Show Card Members',
+		name: 'Show Card Members 顯示卡片成員',
 		type: 'pulldown',
 		options: [
-			'do-not-show',
-			'show-initials',
-			'show-fullnames'
+			'do-not-show 不顯示',
+			'show-initials 顯示姓名的首字母',
+			'show-fullnames 顯示全名'
 			],
 		dflt: 'do-not-show' },
 
   { key: 'showVoteCount', 
-		name: 'Show vote count',
+		name: 'Show vote count 顯示投票數',
 		dflt: true },
 
   { key: 'showDueDate', 
-		name: 'Show Due Date',
+		name: 'Show Due Date 顯示到期日',
 		dflt: true },
 
   { key: 'showCardCreator', 
-		name: 'Show Card Creator',
+		name: 'Show Card Creator 顯示卡片創建者',
 		dflt: true },
 
   { key: 'showCardDesc', 
-		name: 'Show Card Description',
+		name: 'Show Card Description 顯示卡片描述',
 		dflt: true },
 
   { key: 'showClosedCards', 
-		name: 'Show Closed Cards',
+		name: 'Show Closed Cards 顯示已封存的卡片',
 		dflt: false },
 
-  { type: 'fieldset', name: 'Checklists' },
+  { type: 'fieldset', name: 'Checklists 檢核清單' },
 
   { key: 'showChecklists', 
-		name: 'Show Checklists',
+		name: 'Show Checklists 顯示檢核清單',
 		dflt: true },
 
   { key: 'showChecklistTitle', 
-		name: 'Show Checklist Title',
+		name: 'Show Checklist Title 顯示檢核清單標題',
 		dflt: true },
 
   { key: 'showChecklistItems', 
-		name: 'Which Checklist Items to show',
+		name: 'Which Checklist Items to show 顯示哪些檢核清單項目',
 		type: 'pulldown',
 		options: [
-			'none',
-			'all',
-			'unchecked-only',
-			'checked-only'],
+			'none 都不要',
+			'all 全部都要',
+			'unchecked-only 未完成項目',
+			'checked-only 已完成項目'],
 		dflt: 'all' },
 
+  //add by gsyan to show attachments
+  { type: 'fieldset', name: 'Attachments 附件' }, 
 
-  { type: 'fieldset', name: 'Comments' }, 
+  { key: 'showAttachments', 
+		name: 'Show Attachments 顯示附件',
+		dflt: true },
+		
+  { key: 'showAttachmentsPictures', 
+		name: 'Show Attachments Pictures 顯示附件照片',
+		dflt: true },
+
+		
+  { type: 'fieldset', name: 'Comments 迴響' }, 
 
   { key: 'showComments', 
-		name: 'Show Comments',
+		name: 'Show Comments 顯示迴響',
 		dflt: true },
 
   { key: 'showCommentCreator', 
-		name: 'Show Comment Creator',
+		name: 'Show Comment Creator 顯示迴響的建立者',
 		dflt: true },
 
   { key: 'showCommentDate', 
-		name: 'Show Comment Date',
-		dflt: false },
+		name: 'Show Comment Date 顯示迴響日期',
+		dflt: true },
 			
-  { type: 'fieldset', name: 'People' },
+  { type: 'fieldset', name: 'People 成員' },
 
   { key: 'showPersonAs', 
-		name: 'When showing people, use',
+		name: 'When showing people, use 當顯示成員時，使用',
 		type: 'pulldown',
 		options: [
-			'initials',
-			'fullname',
-			'do-not-show'
+			'initials 姓名首字',
+			'fullname 全名',
+			'do-not-show 不顯示名字'
 			],
-		dflt: 'initials' },
+		dflt: 'fullname' },
 
   { key: 'skipCreatorBefore',
-		name: 'Skip names for entries before yyyy-mm-dd', 
+		name: 'Skip names for entries before yyyy-mm-dd 某日期前的條目略過名字', 
 		type: 'text',
 		dflt: '' }
 		

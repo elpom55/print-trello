@@ -188,6 +188,10 @@ function dpyCard(cobj,cardId,mode)
 
 	// -- show desc
 	var x = prefVal.showCardDesc;
+	
+	if (x) cobj.desc = cobj.desc.replace(/\n/g, "<br />\n"); //add by gsyan
+	if (x) cobj.desc = replaceURLWithHTMLLinks(cobj.desc); //add by gsyan
+	
 	if (x) htm.push(do_sub(cobj.desc));
 
 	// -- show any checklists
@@ -200,8 +204,52 @@ function dpyCard(cobj,cardId,mode)
 
 	  }
 	}
+	
+	//add by gsyan to show attachments
+	var x = prefVal.showAttachments; 
+	if (x && cobj.attachments.length > 0){
+	  htm.push('<ul style="list-style-type: lower-alpha">');
 
+	  var marr = cobj.attachments.reverse();
+	  for (var k=0; k<marr.length; k++){
 
+		//console.log('attachment.', k, marr[k]);
+		/*
+		var buf = '<a href="'+marr[k].url+'">';
+		buf += marr[k].name;
+		buf += '</a>';
+		*/
+		var buf = do_sub( '['+marr[k].name+']('+marr[k].url+')' );
+		x = prefVal.showAttachmentsPictures; 
+		if(x && typeof(marr[k].previews) != 'undefined' && typeof(marr[k].previews[0])!='undefined' && typeof(marr[k].previews[0].url) != 'undefined' ) {
+			/*
+			buf += '<br /><a href="'+marr[k].url+'">';
+			buf += '<img src="'+marr[k].previews[0].url+'">';
+			buf += '</a>';
+			*/
+			var img = '<img src="'+marr[k].previews[0].url+'">';
+			buf += do_sub( '['+img+']('+marr[k].url+')' );
+		}
+		buf += ' ';
+
+		/*
+		//console.log('atachment',k , '  ', typeof marr[k].date, marr[k].date, 'vs', prefVal.skipCreatorBefore);
+		if (prefVal.showCommentCreator
+			&& marr[k].date > prefVal.skipCreatorBefore){ 
+				buf += ' ' + dpyWhoName(marr[k].memberCreator.fullName);
+		}
+
+		if (prefVal.showCommentDate) buf += ' ' +
+			marr[k].date.replace(/T.*$/,'');
+
+		*/
+		htm.push('<li><i>', do_sub(buf), '</i>'); 
+	  }
+	  htm.push('</ul>');
+	}
+	htm.push('<hr size=0>');
+	
+	
 	// -- show any comments
 	var x = prefVal.showComments; 
 	if (x && cobj.commArr.length > 0){
@@ -211,6 +259,10 @@ function dpyCard(cobj,cardId,mode)
 	  for (var k=0; k<marr.length; k++){
 
 		//console.log('comment.', k, marr[k]);
+		
+		marr[k].data.text = marr[k].data.text.replace(/\n/g, "<br />\n"); //add by gsyan
+		marr[k].data.text = replaceURLWithHTMLLinks(marr[k].data.text); //add by gsyan
+		
 		var buf = marr[k].data.text + ' ';
 
 //console.log('comment',k , '  ', typeof marr[k].date, marr[k].date, 'vs', prefVal.skipCreatorBefore);
@@ -317,6 +369,7 @@ function do_sub(buf)
 	// apply any markdown conventions
         var htm = SD.makeHtml(buf);
 
+
 	// look for #(\d)+ , e.g. #105
 	// and replace with hyperlink to #card105
 
@@ -365,3 +418,35 @@ function printList(i,mode)
 	win.JS = window;
 }
 
+//
+// codes from:
+//		https://stackoverflow.com/questions/37684/how-to-replace-plain-urls-with-links
+//
+function replaceURLWithHTMLLinks(text) {
+    var re = /(\(.*?)?\b((?:https?|ftp|file):\/\/[-a-z0-9+&@#\/%?=~_()|!:,.;]*[-a-z0-9+&@#\/%=~_()|])/ig;
+    return text.replace(re, function(match, lParens, url) {
+        var rParens = '';
+        lParens = lParens || '';
+
+        // Try to strip the same number of right parens from url
+        // as there are left parens.  Here, lParenCounter must be
+        // a RegExp object.  You cannot use a literal
+        //     while (/\(/g.exec(lParens)) { ... }
+        // because an object is needed to store the lastIndex state.
+        var lParenCounter = /\(/g;
+        while (lParenCounter.exec(lParens)) {
+            var m;
+            // We want m[1] to be greedy, unless a period precedes the
+            // right parenthesis.  These tests cannot be simplified as
+            //     /(.*)(\.?\).*)/.exec(url)
+            // because if (.*) is greedy then \.? never gets a chance.
+            if (m = /(.*)(\.\).*)/.exec(url) ||
+                    /(.*)(\).*)/.exec(url)) {
+                url = m[1];
+                rParens = m[2] + rParens;
+            }
+        }
+        //return lParens + "<a href='" + url + "'>" + url + "</a>" + rParens;
+		return lParens + "[" + url + "](" + url + ")" + rParens;
+    });
+}
